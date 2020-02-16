@@ -10,8 +10,8 @@ describe("Timesheet Form", () => {
   beforeAll(async () => {
     jest.setTimeout(30000);
     browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox"]
+      headless: false,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     page = await browser.newPage();
     await page.goto(URL_DEV_FORM, { waitUntil: "domcontentloaded" });
@@ -32,16 +32,13 @@ describe("Timesheet Form", () => {
   });
 
   describe("On form submitting", () => {
-    const emailSelector = 'input[aria-label="Email address';
+    const emailSelector = 'input[aria-label="Email address"]';
     const dateSelector = 'div[aria-label="Data"] input';
-    const startTimeHourSelector =
-      'div[aria-label="Godzina od"] div.freebirdFormviewerViewItemsTimeNumberEdit:first-child input';
-    const startTimeMinutesSelector =
-      'div[aria-label="Godzina od"] div.freebirdFormviewerViewItemsTimeNumberEdit:last-child input';
-    const endTimeHourSelector =
-      'div[aria-label="Godzina do"] div.freebirdFormviewerViewItemsTimeNumberEdit:first-child input';
-    const endTimeMinutesSelector =
-      'div[aria-label="Godzina do"] div.freebirdFormviewerViewItemsTimeNumberEdit:last-child input';
+    let startTimeHourSelector = 'div[aria-label="Godzina od"] input[max="12"]';
+    let startTimeMinutesSelector =
+      'div[aria-label="Godzina od"] input[max="59"]';
+    let endTimeHourSelector = 'div[aria-label="Godzina do"] input[max="12"]';
+    let endTimeMinutesSelector = 'div[aria-label="Godzina do"] input[max="59"]';
     const submitSelector = 'div[role="button"] span';
 
     const validatorsRegex = /(Odpowiedź na to pytanie jest wymagana|This is a required question)/;
@@ -91,14 +88,23 @@ describe("Timesheet Form", () => {
         `${todayArr[1]}-${todayArr[2]}-${todayArr[0]}`
       );
 
+      await page.waitFor(3000);
+
       await page.type(startTimeHourSelector, startHour.toString(), {
-        delay: 100
+        delay: 1000
       });
 
-      await page.type(startTimeMinutesSelector, "00", { delay: 100 });
+      await page.waitFor(3000);
 
-      await page.type(endTimeHourSelector, endHour.toString(), { delay: 100 });
-      await page.type(endTimeMinutesSelector, "00", { delay: 100 });
+      await page.type(startTimeMinutesSelector, "00", { delay: 1000 });
+
+      await page.waitFor(3000);
+
+      await page.type(endTimeHourSelector, endHour.toString(), { delay: 1000 });
+
+      await page.waitFor(3000);
+
+      await page.type(endTimeMinutesSelector, "00", { delay: 1000 });
 
       await Promise.all([
         page.click(submitSelector),
