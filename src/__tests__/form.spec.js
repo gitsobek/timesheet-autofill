@@ -44,15 +44,18 @@ describe("Timesheet Form", () => {
       'div[aria-label="Godzina do"] div.freebirdFormviewerViewItemsTimeNumberEdit:last-child input';
     const submitSelector = 'div[role="button"] span';
 
+    const validatorsRegex = /(Odpowiedź na to pytanie jest wymagana|This is a required question)/;
+
     it("should fail with no filled fields", async () => {
       let text = await page.evaluate(() => document.body.textContent);
-      await expect(text).not.toMatch("Odpowiedź na to pytanie jest wymagana");
+
+      await expect(text).not.toMatch(validatorsRegex);
 
       await page.click(submitSelector);
       await page.waitFor(500);
 
       text = await page.evaluate(() => document.body.textContent);
-      await expect(text).toMatch("Odpowiedź na to pytanie jest wymagana");
+      await expect(text).toMatch(validatorsRegex);
     });
 
     it("should not validate email address", async () => {
@@ -60,7 +63,7 @@ describe("Timesheet Form", () => {
       await page.type(emailSelector, "abc");
       await page.click(submitSelector);
       await page.waitFor(500);
-      await expect(text).toMatch("Odpowiedź na to pytanie jest wymagana");
+      await expect(text).toMatch(validatorsRegex);
     });
 
     it("should submit the form and naviagate to next page", async () => {
@@ -107,7 +110,8 @@ describe("Timesheet Form", () => {
       await page.waitFor(2000);
 
       let text = await page.evaluate(() => document.body.textContent);
-      await expect(text).toMatch("Twoja odpowiedź została zapisana.");
+      const responseRegex = /(Twoja odpowiedź została zapisana|Your response has been recorded)/;
+      await expect(text).toMatch(responseRegex);
     });
   });
 
