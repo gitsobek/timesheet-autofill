@@ -76,7 +76,7 @@ const sheet = new TimeSheet();
     }
 
     /* Boot up headless browser */
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     /* Go to timesheet form */
