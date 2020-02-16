@@ -1,0 +1,19 @@
+{
+  "name": "idboats-timesheet-autofill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "puppeteer": "^2.1.1"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "jest --runInBand --detectOpenHandles"
+  },
+  "author": "Piotr Sobuś",
+  "license": "ISC"
+}

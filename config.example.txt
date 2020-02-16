@@ -1,0 +1,5 @@
+URL=<paste here you timesheet url>
+EMAIL=<type here your associated email>
+START=<type here your default work start hour>
+END=<type here your default work end hour>
+
