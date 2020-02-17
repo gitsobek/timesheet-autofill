@@ -1,4 +1,7 @@
+#!/usr/bin/env node
+
 const fs = require("fs");
+const path = require('path');
 const _ = require("lodash");
 const puppeteer = require("puppeteer");
 const Transform = require("stream").Transform;
@@ -43,7 +46,7 @@ const sheet = new TimeSheet();
 (async () => {
   try {
     /* Load user timesheet config */
-    const dictionary = await sheet.loadConfig("./config.txt");
+    const dictionary = await sheet.loadConfig(path.join(__dirname, '../config.txt'));
 
     /* Check consistency of timesheet settings */
     if (!dictionary || !Object.keys(dictionary).length) {
