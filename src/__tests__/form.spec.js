@@ -18,7 +18,7 @@ describe("Timesheet Form", () => {
   });
 
   xit("should put test in debug mode", async () => {
-    await jestPuppeteer.debug();
+    await puppeteer.debug();
   });
 
   it("should open page properly", async () => {
