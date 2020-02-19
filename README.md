@@ -8,8 +8,6 @@ Timesheet Autofill is an automated and autonomous tool for filling the working h
 
 Timesheet Autofill requires [Node.js](https://nodejs.org/) v10+ to run.
 
-No executable files for Windows and Unix systems have been carried out yet, therefore to run this script you have to use node environment.
-
 Download and install the dependencies.
 
 ```sh
@@ -17,16 +15,26 @@ $ git clone https://github.com/gitsobek/timesheet-autofill
 $ cd timesheet-autofill
 $ npm install
 ```
+
+Next step is creation of executable file for you OS.
+```sh
+$ npm run init
+```
+
+From this moment you can run the script globally everywhere in your system using the command below:
+```sh
+$ timesheet-autofill
+```
 Create config.txt script based on the example (config.example.txt) and configure your information data. Run the script:
 
 ```sh
-$ npm start
+$ timesheet-autofill
 ```
 If you can pass your current's day working hours and override the set ones in your config file:
 ```sh
-$ npm start 9 17
+$ timesheet-autofill 9 17
 ```
-To run test just simply:
+To run test just simply (you need to be in root catalog of the tool):
 ```sh
 $ npm test
 ```
@@ -39,7 +47,7 @@ There is no development environment set up yet. If you still want to contribute 
 - [x] Write End-To-End test
 - [x] Add CircleCI integration
 - [ ] Add development mode (run script in non-headless mode and inspect the script execution)
-- [ ] Generate executable files for Windows, Linux and Mac systems for easier use
+- [x] Generate executable files for Windows, Linux and Mac systems for easier use
 - [ ] Possibility to set minutes (e.g: 8:30 - 16:30)
 - [ ] Possibility to set date
 - [ ] Code improvement & adjustments (?)
