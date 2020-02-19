@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/gitsobek/timesheet-autofill.svg?style=shield&circle-token=19786e8907c15dac67f9fda659a2eb923e153d88)](LINK)
 
-Timesheet Autofill is an automated and autonomous tool for filling the working hours timesheet in Google Form and submitting it with the date that corresponds to today's date and hours passed as arguments or set in config file. This project was released as beta version (1.0.0) and its development will be continued till creating a stable version.
+Timesheet Autofill is an automated and autonomous tool for filling the working hours timesheet in Google Form and submitting it with the date that corresponds to today's date and hours passed as arguments or set in config file. This project is released as stable version and its development may be continued in the future.
 
 ### Installation
 
@@ -22,22 +22,22 @@ Next step is creation of executable file for you OS.
 $ npm run init
 ```
 
-From this moment you can run the script globally everywhere in your system using the command below:
+From this moment you can run the script globally everywhere in your system. Create config.txt script based on the example (config.example.txt) and configure your information data. Run the script using the command below:
 
 ```sh
 $ timesheet-autofill
 ```
 
-Create config.txt script based on the example (config.example.txt) and configure your information data. Run the script:
-
-```sh
-$ timesheet-autofill
-```
-
-You can pass your current's day working hours and override the set ones in your config file:
+You can pass your current's day working hours and override the ones you've set in your config file:
 
 ```sh
 $ timesheet-autofill -s 8:30 -e 16:30
+```
+
+You can also fill out the form for a selected day by passing the **-c** option.
+
+```sh
+$ timesheet-autofill -c 19.02.2020 -s 8:30 -e 16:30
 ```
 
 To run test just simply (you need to be in root catalog of the tool):
@@ -65,7 +65,7 @@ From this moment the script will ignore your timesheet form URL you've set in co
 - [x] Add development mode (run script in non-headless mode and inspect the script execution)
 - [x] Generate executable files for Windows, Linux and Mac systems for easier use
 - [x] Possibility to set minutes (e.g: 8:30 - 16:30)
-- [ ] Possibility to set date
+- [x] Possibility to set date
 - [ ] Code improvement & adjustments (?)
 
 ## License

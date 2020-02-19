@@ -11,12 +11,14 @@ const URL_REGEX = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.
 const URL_DEV_FORM =
   "https://docs.google.com/forms/d/e/1FAIpQLScyt8cNjhbIQCH5GT5eoCLrq3MAF50f-PqtKPPKpQ21h0Jcxw/viewform";
 
+const DATE_REGEX = /^([0-2][0-9]|(3)[0-1])(\.)(((0)[0-9])|((1)[0-2]))(\.)\d{4}$/;
 const TIME_REGEX = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 const HOUR_REGEX = /^([0-1]?[0-9]|2[0-3])$/;
 
 /* Handle arguments and options passed in command-line */
 program
   .option("-d, --dev", "set environment to development mode")
+  .option("-c, --calendar <date>", "set date (e.g: 19.02.2020")
   .option("-s, --start <time>", "set start time (e.g: 8 or 8:30)")
   .option("-e, --end <time>", "set end time (e.g: 16 or 16:30)")
   .parse(process.argv);
@@ -81,9 +83,12 @@ const sheet = new TimeSheet();
 
     /* Set user's current day working hours */
     const args = program.opts();
-    let [, start = dictionary.start, end = dictionary.end] = Object.values(
-      args
-    );
+    let [
+      ,
+      date,
+      start = dictionary.start,
+      end = dictionary.end
+    ] = Object.values(args);
 
     let startHour, startMin, endHour, endMin;
 
@@ -107,6 +112,21 @@ const sheet = new TimeSheet();
       throw new Error(
         "End time has invalid format. It must be in hh:mm (e.g: 16:30) or presented as single number (e.g: 16)."
       );
+    }
+
+    /* Validate date */
+    if (date) {
+      if (!DATE_REGEX.test(date)) {
+        throw new Error(
+          "Picked date has invalid format. It must be in DD.MM.YYYY."
+        );
+      }
+      const dateArr = date.split(".");
+      date = `${dateArr[1]}-${dateArr[0]}-${dateArr[2]}`;
+    } else {
+      const today = new Date().toISOString().split("T")[0];
+      const todayArr = today.split("-");
+      date = `${todayArr[1]}-${todayArr[2]}-${todayArr[0]}`;
     }
 
     if (parseInt(startHour) > parseInt(endHour)) {
@@ -158,16 +178,10 @@ const sheet = new TimeSheet();
       throw new Error("Provided URL is not our timesheet form!");
     }
 
-    const today = new Date().toISOString().split("T")[0];
-    const todayArr = today.split("-");
-
     /* Fill up the form */
     await page.type('input[aria-label="Email address"]', dictionary.email);
 
-    await page.type(
-      'div[aria-label="Data"] input',
-      `${todayArr[1]}-${todayArr[2]}-${todayArr[0]}`
-    );
+    await page.type('div[aria-label="Data"] input', date);
 
     await page.type(
       'div[aria-label="Godzina od"] div.freebirdFormviewerViewItemsTimeNumberEdit:first-child input',
