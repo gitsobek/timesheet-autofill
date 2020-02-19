@@ -7,6 +7,7 @@
     "timesheet-autofill": "./src/app.js"
   },
   "dependencies": {
+    "commander": "^4.1.1",
     "lodash": "^4.17.15",
     "puppeteer": "^2.1.1"
   },

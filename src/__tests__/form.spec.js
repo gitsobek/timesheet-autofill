@@ -10,7 +10,7 @@ describe("Timesheet Form", () => {
   beforeAll(async () => {
     jest.setTimeout(30000);
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     page = await browser.newPage();
@@ -87,21 +87,17 @@ describe("Timesheet Form", () => {
         dateSelector,
         `${todayArr[1]}-${todayArr[2]}-${todayArr[0]}`
       );
-
       await page.waitFor(3000);
 
       await page.type(startTimeHourSelector, startHour.toString(), {
         delay: 1000
       });
-
       await page.waitFor(3000);
 
       await page.type(startTimeMinutesSelector, "00", { delay: 1000 });
-
       await page.waitFor(3000);
 
       await page.type(endTimeHourSelector, endHour.toString(), { delay: 1000 });
-
       await page.waitFor(3000);
 
       await page.type(endTimeMinutesSelector, "00", { delay: 1000 });
@@ -113,7 +109,7 @@ describe("Timesheet Form", () => {
         })
       ]);
 
-      await page.waitFor(2000);
+      await page.waitFor(3000);
 
       let text = await page.evaluate(() => document.body.textContent);
       const responseRegex = /(Twoja odpowiedź została zapisana|Your response has been recorded)/;
