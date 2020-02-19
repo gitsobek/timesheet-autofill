@@ -35,10 +35,11 @@ describe("Timesheet Form", () => {
     const emailSelector = 'input[aria-label="Email address"]';
     const dateSelector = 'div[aria-label="Data"] input';
     let startTimeHourSelector = 'div[aria-label="Godzina od"] input[max="12"]';
-    let startTimeMinutesSelector =
+    const startTimeMinutesSelector =
       'div[aria-label="Godzina od"] input[max="59"]';
     let endTimeHourSelector = 'div[aria-label="Godzina do"] input[max="12"]';
-    let endTimeMinutesSelector = 'div[aria-label="Godzina do"] input[max="59"]';
+    const endTimeMinutesSelector =
+      'div[aria-label="Godzina do"] input[max="59"]';
     const submitSelector = 'div[role="button"] span';
 
     const validatorsRegex = /(Odpowiedź na to pytanie jest wymagana|This is a required question)/;
@@ -88,6 +89,14 @@ describe("Timesheet Form", () => {
         `${todayArr[1]}-${todayArr[2]}-${todayArr[0]}`
       );
       await page.waitFor(3000);
+
+      if ((await page.$(startTimeHourSelector)) === null) {
+        startTimeHourSelector = 'div[aria-label="Godzina od"] input[max="23"]';
+      }
+
+      if ((await page.$(endTimeHourSelector)) === null) {
+        endTimeHourSelector = 'div[aria-label="Godzina do"] input[max="23"]';
+      }
 
       await page.type(startTimeHourSelector, startHour.toString(), {
         delay: 1000
