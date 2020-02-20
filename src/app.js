@@ -4,6 +4,7 @@ const fs = require("fs");
 const _ = require("lodash");
 const path = require("path");
 const program = require("commander");
+const readline = require("readline");
 const puppeteer = require("puppeteer");
 const Transform = require("stream").Transform;
 
@@ -22,6 +23,14 @@ program
   .option("-s, --start <time>", "set start time (e.g: 8 or 8:30)")
   .option("-e, --end <time>", "set end time (e.g: 16 or 16:30)")
   .parse(process.argv);
+
+/* Initialize prompt for user */
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const question = str => new Promise(resolve => rl.question(str, resolve));
 
 function TimeSheet() {
   this.dictionary = {};
@@ -115,17 +124,21 @@ const sheet = new TimeSheet();
     }
 
     /* Validate date */
+    let _displayDate;
+
     if (date) {
       if (!DATE_REGEX.test(date)) {
         throw new Error(
           "Picked date has invalid format. It must be in DD.MM.YYYY."
         );
       }
+      _displayDate = date;
       const dateArr = date.split(".");
       date = `${dateArr[1]}-${dateArr[0]}-${dateArr[2]}`;
     } else {
       const today = new Date().toISOString().split("T")[0];
       const todayArr = today.split("-");
+      _displayDate = `${todayArr[2]}.${todayArr[1]}.${todayArr[0]}`;
       date = `${todayArr[1]}-${todayArr[2]}-${todayArr[0]}`;
     }
 
@@ -148,6 +161,30 @@ const sheet = new TimeSheet();
     /* Check if set timesheet link is a valid URL */
     if (!URL_REGEX.test(dictionary.url)) {
       throw new Error("Invalid URL!");
+    }
+
+    /* Display prompt for user */
+    const summaryText =
+      `------------- Summary -------------\n` +
+      `Execution mode: ${IS_DEBUG ? "development" : "normal"}\n` +
+      `Date: ${_displayDate}\n` +
+      `Starting time: ${startHour}:${startMin}\n` +
+      `Ending time: ${endHour}:${endMin}\n` +
+      `-----------------------------------\n\n` +
+      `Do you want to continue? (yes/no) `;
+
+    let wantContinue = await question(summaryText);
+
+    while (!/(yes)|(no)/i.test(wantContinue)) {
+      wantContinue = await question(
+        "Wrong answer. Do you want to continue? (yes/no) "
+      );
+    }
+
+    rl.close();
+
+    if (/^(no)$/i.test(wantContinue)) {
+      return;
     }
 
     /* Boot up headless browser */
