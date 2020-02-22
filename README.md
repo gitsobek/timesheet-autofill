@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/gitsobek/timesheet-autofill.svg?style=shield&circle-token=19786e8907c15dac67f9fda659a2eb923e153d88)](LINK)
 
-Timesheet Autofill is an automated and autonomous tool for filling the working hours timesheet in Google Form and submitting it with the date that corresponds to today's date and hours passed as arguments or set in config file. This project is released as stable version and its development may be continued in the future.
+Timesheet Autofill is an automated and autonomous tool for filling the working hours timesheet in Google Forms and submitting it with the date and hours passed as arguments or set in config file. This project is released as stable version and its development may be continued in the future.
 
 ### Installation
 
